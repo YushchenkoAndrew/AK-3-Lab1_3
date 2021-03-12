@@ -2,9 +2,9 @@
 .cpu cortex-m4
 //.fpu softvfp
 .thumb
-#define A #3
-#define B #4
-#define C #5
+#define A #2
+#define B #3
+#define C #4
 
 .global vtable_kernel
 .global __kernel_reset__
@@ -19,7 +19,8 @@ vtable_kernel:
     .size vtable_kernel, .-vtable_kernel
 
 .section .rodata
-    data: .asciz "kernel started4!\n"
+    data: .asciz "kernel started!\n"
+    data_end: .asciz "kernel ended!\n"
 .section .text
 __kernel_reset__:
     mov r0, #0
@@ -39,6 +40,10 @@ else:
 endif:
     mul r0, r2
 
+    bl dbgput_num
+
+    ldr r0, =data_end
+    bl dbgput_line
 
     end:
     b end
